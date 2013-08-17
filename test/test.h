@@ -24,6 +24,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <time.h> // clock_t, CLOCKS_PER_SEC
 
 #define TEST_LINE_LEN 79
 
@@ -54,7 +55,8 @@ int test_name ## _function(void)
   size_t pass_count_ = 0; \
   size_t total_tests_ran_ = 0; \
   FILE *junit_xml_file = junit_xml_init(junit_xml_output_filepath); \
-  junit_xml_begin_testsuites(junit_xml_file)
+  junit_xml_begin_testsuites(junit_xml_file); \
+  clock_t start = clock()
 
 /* Use this to run a list of tests as a group. The provided group name serves
  * as a means for one to organize how test output is generated and does not
@@ -95,6 +97,9 @@ test_runner( \
   } \
   junit_xml_end_testsuites(junit_xml_file); \
   junit_xml_finalize(junit_xml_file); \
+  clock_t end = clock(); \
+  float elapsed = (float)(end - start) / CLOCKS_PER_SEC; \
+  printf("Time elapsed: %0.3f seconds.\n", elapsed); \
   return pass_count_ != total_tests_ran_
 
 struct test {

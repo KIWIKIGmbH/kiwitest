@@ -92,7 +92,10 @@ void test_runner(
      * write over it with colored print. */
     printf("%s:", test_list[i].name);
 
+    clock_t start = clock();
     int failed = test_list[i].test();
+    int ticks_elapsed = clock() - start;
+    float elapsed_time = ticks_elapsed / CLOCKS_PER_SEC;
 
     if (failed)
     {
@@ -105,7 +108,7 @@ void test_runner(
 
       junit_xml_fail_testcase(
         junit_xml_file,
-        group_name, test_list[i].name,
+        group_name, test_list[i].name, elapsed_time,
         failure_message_buffer
       );
     }
@@ -130,7 +133,9 @@ void test_runner(
       for (int i = 0; i < TEST_LINE_LEN; ++i) printf(" ");
       printf("\r");
 
-      junit_xml_pass_testcase(junit_xml_file, group_name, test_list[i].name);
+      junit_xml_pass_testcase(
+        junit_xml_file, group_name, test_list[i].name, elapsed_time
+      );
     }
 
     if (!failed) ++runner_pass_count;

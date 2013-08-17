@@ -51,28 +51,29 @@ void junit_xml_end_testsuite(FILE *junit_xml_file)
 }
 
 void junit_xml_pass_testcase(
-  FILE *junit_xml_file, const char *classname, const char *testcase_name)
+  FILE *junit_xml_file, const char *classname, const char *testcase_name,
+  float time)
 {
   if (!junit_xml_file) return;
   fprintf(
     junit_xml_file,
-    "    <testcase classname=\"%s\" name=\"%s\"/>\n",
-    classname, testcase_name
+    "    <testcase classname=\"%s\" name=\"%s\" time=\"%0.14f\"/>\n",
+    classname, testcase_name, time
   );
 }
 
 void junit_xml_fail_testcase(
   FILE *junit_xml_file,
-  const char *classname, const char *testcase_name,
+  const char *classname, const char *testcase_name, float time,
   const char *failure_message)
 {
   if (!junit_xml_file) return;
   fprintf(
     junit_xml_file,
-    "    <testcase classname=\"%s\" name=\"%s\">\n"
+    "    <testcase classname=\"%s\" name=\"%s\" time=\"%0.14f\">\n"
     "      <failure type=\"EPIC FAIL\">\n%s"
     "      </failure>\n"
     "    </testcase>\n",
-    classname, testcase_name, failure_message
+    classname, testcase_name, time, failure_message
   );
 }
