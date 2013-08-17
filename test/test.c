@@ -7,9 +7,13 @@
  */
 
 #include "test.h"
+#include "junit_xml.h"
 #include <stdio.h>
+#include <stdbool.h>
 
 bool test_verbose = false;
+char failure_message_buffer[1024];
+bool with_color = true;
 
 /*
  * Print out the provided name to the provided string, centered on a line
@@ -62,6 +66,7 @@ static void print_dashed_name(
 }
 
 void test_runner(
+  FILE *junit_xml_file,
   char *group_name, size_t group_name_len,
   size_t *pass_count, size_t *total_tests_ran,
   struct test test_list[], size_t num_tests)
@@ -69,6 +74,8 @@ void test_runner(
   /* Keep track of the number of tests passed so that we can present
    * information about how many tests passed. */
   size_t runner_pass_count = 0;
+
+  junit_xml_begin_testsuite(junit_xml_file, group_name, num_tests);
 
   print_dashed_name(group_name, group_name_len, TEST_LINE_LEN);
 
@@ -95,6 +102,12 @@ void test_runner(
         FOREGROUND_WHITE, BACKGROUND_RED,
         test_list[i].name, "FAIL"
       );
+
+      junit_xml_fail_testcase(
+        junit_xml_file,
+        group_name, test_list[i].name,
+        failure_message_buffer
+      );
     }
     else
     {
@@ -116,6 +129,8 @@ void test_runner(
       printf("\r");
       for (int i = 0; i < TEST_LINE_LEN; ++i) printf(" ");
       printf("\r");
+
+      junit_xml_pass_testcase(junit_xml_file, group_name, test_list[i].name);
     }
 
     if (!failed) ++runner_pass_count;
@@ -125,13 +140,26 @@ void test_runner(
   }
 
   /* All tests have finished running, so display a summary of what happened. */
-  printf(
-    "\r\e[1;%d;%dm%lu/%lu %s tests passed.\e[0m\n\n",
-    FOREGROUND_WHITE,
-    runner_pass_count == num_tests ? BACKGROUND_GREEN : BACKGROUND_RED,
-    runner_pass_count, num_tests,
-    group_name
-  );
+  if (with_color)
+  {
+    printf(
+      "\r\e[1;%d;%dm%zu/%zu %s tests passed.\e[0m\n\n",
+      FOREGROUND_WHITE,
+      runner_pass_count == num_tests ? BACKGROUND_GREEN : BACKGROUND_RED,
+      runner_pass_count, num_tests,
+      group_name
+    );
+  }
+  else
+  {
+    printf(
+      "\r%zu/%zu %s tests passed.\n\n",
+      runner_pass_count, num_tests,
+      group_name
+    );
+  }
+
+  junit_xml_end_testsuite(junit_xml_file);
 
   *pass_count += runner_pass_count;
   *total_tests_ran += num_tests;

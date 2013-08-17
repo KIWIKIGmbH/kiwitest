@@ -17,12 +17,28 @@
 do { \
   if (!(condition)) \
   { \
-    printf( \
-      "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #condition \
-      "' (expected true, was false)\e[0m\n", \
-      FOREGROUND_WHITE, BACKGROUND_RED, \
-      __LINE__ \
-    ); \
+    if (with_color) \
+    { \
+      snprintf( \
+        failure_message_buffer, \
+        sizeof(failure_message_buffer), \
+        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #condition \
+        "' (expected true, was false)\e[0m\n", \
+        FOREGROUND_WHITE, BACKGROUND_RED, \
+        __LINE__ \
+      ); \
+    } \
+    else \
+    { \
+      snprintf( \
+        failure_message_buffer, \
+        sizeof(failure_message_buffer), \
+        __FILE__ ":%d\nTest failed: '" #condition \
+        "' (expected true, was false)\n", \
+        __LINE__ \
+      ); \
+    } \
+    printf("%s", failure_message_buffer); \
     return 1; \
   } \
 } while(0)
@@ -31,12 +47,28 @@ do { \
 do { \
   if (condition) \
   { \
-    printf( \
-      "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #condition \
-      "' (expected false, was true)\e[0m\n", \
-      FOREGROUND_WHITE, BACKGROUND_RED, \
-      __LINE__ \
-    ); \
+    if (with_color) \
+    { \
+      snprintf( \
+        failure_message_buffer, \
+        sizeof(failure_message_buffer), \
+        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #condition \
+        "' (expected false, was true)\e[0m\n", \
+        FOREGROUND_WHITE, BACKGROUND_RED, \
+        __LINE__ \
+      ); \
+    } \
+    else \
+    { \
+      snprintf( \
+        failure_message_buffer, \
+        sizeof(failure_message_buffer), \
+        __FILE__ ":%d\nTest failed: '" #condition \
+        "' (expected false, was true)\n", \
+        __LINE__ \
+      ); \
+    } \
+    printf("%s", failure_message_buffer); \
     return 1; \
   } \
 } while(0)
@@ -45,12 +77,28 @@ do { \
 do { \
   if (!((a) > (b))) \
   { \
-    printf( \
-      "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " > " #b \
-      "' (" #a "=%d, " #b "=%d)\e[0m\n", \
-      FOREGROUND_WHITE, BACKGROUND_RED, \
-      __LINE__, (int)a, (int)b \
-    ); \
+    if (with_color) \
+    { \
+      snprintf( \
+        failure_message_buffer, \
+        sizeof(failure_message_buffer), \
+        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " > " #b \
+        "' (" #a "=%d, " #b "=%d)\e[0m\n", \
+        FOREGROUND_WHITE, BACKGROUND_RED, \
+        __LINE__, (int)a, (int)b \
+      ); \
+    } \
+    else \
+    { \
+      snprintf( \
+        failure_message_buffer, \
+        sizeof(failure_message_buffer), \
+        __FILE__ ":%d\nTest failed: '" #a " > " #b \
+        "' (" #a "=%d, " #b "=%d)\n", \
+        __LINE__, (int)a, (int)b \
+      ); \
+    } \
+    printf("%s", failure_message_buffer); \
     return 1; \
   } \
 } while(0)
@@ -59,12 +107,28 @@ do { \
 do { \
   if (!((a) < (b))) \
   { \
-    printf( \
-      "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " < " #b \
-      "' (" #a "=%d, " #b "=%d)\e[0m\n", \
-      FOREGROUND_WHITE, BACKGROUND_RED, \
-      __LINE__, (int)a, (int)b \
-    ); \
+    if (with_color) \
+    { \
+      snprintf( \
+        failure_message_buffer, \
+        sizeof(failure_message_buffer), \
+        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " < " #b \
+        "' (" #a "=%d, " #b "=%d)\e[0m\n", \
+        FOREGROUND_WHITE, BACKGROUND_RED, \
+        __LINE__, (int)a, (int)b \
+      ); \
+    } \
+    else \
+    { \
+      snprintf( \
+        failure_message_buffer, \
+        sizeof(failure_message_buffer), \
+        __FILE__ ":%d\nTest failed: '" #a " < " #b \
+        "' (" #a "=%d, " #b "=%d)\n", \
+        __LINE__, (int)a, (int)b \
+      ); \
+    } \
+    printf("%s", failure_message_buffer); \
     return 1; \
   } \
 } while(0)
@@ -73,12 +137,28 @@ do { \
 do { \
   if (!((a) >= (b))) \
   { \
-    printf( \
-      "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " >= " #b \
-      "' (" #a "=%d, " #b "=%d)\e[0m\n", \
-      FOREGROUND_WHITE, BACKGROUND_RED, \
-      __LINE__, (int)a, (int)b \
-    ); \
+    if (with_color) \
+    { \
+      snprintf( \
+        failure_message_buffer, \
+        sizeof(failure_message_buffer), \
+        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " >= " #b \
+        "' (" #a "=%d, " #b "=%d)\e[0m\n", \
+        FOREGROUND_WHITE, BACKGROUND_RED, \
+        __LINE__, (int)a, (int)b \
+      ); \
+    } \
+    else \
+    { \
+      snprintf( \
+        failure_message_buffer, \
+        sizeof(failure_message_buffer), \
+        __FILE__ ":%d\nTest failed: '" #a " >= " #b \
+        "' (" #a "=%d, " #b "=%d)\n", \
+        __LINE__, (int)a, (int)b \
+      ); \
+    } \
+    printf("%s", failure_message_buffer); \
     return 1; \
   } \
 } while(0)
@@ -87,12 +167,28 @@ do { \
 do { \
   if (!((a) <= (b))) \
   { \
-    printf( \
-      "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " <= " #b \
-      "' (" #a "=%d, " #b "=%d)\e[0m\n", \
-      FOREGROUND_WHITE, BACKGROUND_RED, \
-      __LINE__, (int)a, (int)b \
-    ); \
+    if (with_color) \
+    { \
+      snprintf( \
+        failure_message_buffer, \
+        sizeof(failure_message_buffer), \
+        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " <= " #b \
+        "' (" #a "=%d, " #b "=%d)\e[0m\n", \
+        FOREGROUND_WHITE, BACKGROUND_RED, \
+        __LINE__, (int)a, (int)b \
+      ); \
+    } \
+    else \
+    { \
+      snprintf( \
+        failure_message_buffer, \
+        sizeof(failure_message_buffer), \
+        __FILE__ ":%d\nTest failed: '" #a " <= " #b \
+        "' (" #a "=%d, " #b "=%d)\n", \
+        __LINE__, (int)a, (int)b \
+      ); \
+    } \
+    printf("%s", failure_message_buffer); \
     return 1; \
   } \
 } while(0)
@@ -101,12 +197,28 @@ do { \
 do { \
   if (!((a) == (b))) \
   { \
-    printf( \
-      "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " == " #b \
-      "' (" #a "=%d, " #b "=%d)\e[0m\n", \
-      FOREGROUND_WHITE, BACKGROUND_RED, \
-      __LINE__, (int)a, (int)b \
-    ); \
+    if (with_color) \
+    { \
+      snprintf( \
+        failure_message_buffer, \
+        sizeof(failure_message_buffer), \
+        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " == " #b \
+        "' (" #a "=%d, " #b "=%d)\e[0m\n", \
+        FOREGROUND_WHITE, BACKGROUND_RED, \
+        __LINE__, (int)a, (int)b \
+      ); \
+    } \
+    else \
+    { \
+      snprintf( \
+        failure_message_buffer, \
+        sizeof(failure_message_buffer), \
+        __FILE__ ":%d\nTest failed: '" #a " == " #b \
+        "' (" #a "=%d, " #b "=%d)\n", \
+        __LINE__, (int)a, (int)b \
+      ); \
+    } \
+    printf("%s", failure_message_buffer); \
     return 1; \
   } \
 } while(0)
@@ -115,12 +227,28 @@ do { \
 do { \
   if (!((a) != (b))) \
   { \
-    printf( \
-      "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " != " #b \
-      "' (" #a "=%d, " #b "=%d)\e[0m\n", \
-      FOREGROUND_WHITE, BACKGROUND_RED, \
-      __LINE__, (int)a, (int)b \
-    ); \
+    if (with_color) \
+    { \
+      snprintf( \
+        failure_message_buffer, \
+        sizeof(failure_message_buffer), \
+        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " != " #b \
+        "' (" #a "=%d, " #b "=%d)\e[0m\n", \
+        FOREGROUND_WHITE, BACKGROUND_RED, \
+        __LINE__, (int)a, (int)b \
+      ); \
+    } \
+    else \
+    { \
+      snprintf( \
+        failure_message_buffer, \
+        sizeof(failure_message_buffer), \
+        __FILE__ ":%d\nTest failed: '" #a " != " #b \
+        "' (" #a "=%d, " #b "=%d)\n", \
+        __LINE__, (int)a, (int)b \
+      ); \
+    } \
+    printf("%s", failure_message_buffer); \
     return 1; \
   } \
 } while(0)

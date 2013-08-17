@@ -12,7 +12,8 @@
 
 #include "test.h"
 
-static void handle_command_line(int argc, char *argv[])
+static void handle_command_line(
+  int argc, char *argv[], char **junit_xml_output_filepath)
 {
   for (int i = 1; i < argc; ++i)
   {
@@ -23,18 +24,28 @@ static void handle_command_line(int argc, char *argv[])
         case 'v':
           test_verbose = true;
           break;
+        case 'f':
+          if (argc > i + 1)
+          {
+            *junit_xml_output_filepath = argv[i + 1];
+            with_color = false;
+            ++i; /* Consume the file name token. */
+          }
+          break;
       }
     }
   }
 }
 
 /* If you provide "-v" on the command line, the test output will be more
- * verbose. */
+ * verbose. If you provide a "-f" followed by a file name on the command line,
+ * the test runner will output JUint-style XML to that file. */
 int main(int argc, char *argv[])
 {
-  handle_command_line(argc, argv);
+  char *junit_xml_output_filepath = NULL;
+  handle_command_line(argc, argv, &junit_xml_output_filepath);
 
-  TEST_INIT();
+  TEST_INIT(junit_xml_output_filepath);
 
   RUN_TESTS(
     test,

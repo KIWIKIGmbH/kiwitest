@@ -19,6 +19,7 @@
 
 #include "test_asserts.h"
 #include "test_colors.h"
+#include "junit_xml.h"
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -27,6 +28,8 @@
 #define TEST_LINE_LEN 79
 
 extern bool test_verbose;
+extern char failure_message_buffer[1024];
+extern bool with_color;
 
 #define SIZEOF_ARRAY(array) sizeof(array) / sizeof(*array)
 
@@ -47,9 +50,11 @@ int test_name ## _function(void)
 /* Use this to initialize the test harness. It should be used from within the
  * function where RUN_TESTS will be called. This macro should be used only once
  * within a function. */
-#define TEST_INIT() \
-  size_t pass_count = 0; \
-  size_t total_tests_ran = 0
+#define TEST_INIT(junit_xml_output_filepath) \
+  size_t pass_count_ = 0; \
+  size_t total_tests_ran_ = 0; \
+  FILE *junit_xml_file = junit_xml_init(junit_xml_output_filepath); \
+  junit_xml_begin_testsuites(junit_xml_file)
 
 /* Use this to run a list of tests as a group. The provided group name serves
  * as a means for one to organize how test output is generated and does not
@@ -61,8 +66,9 @@ struct test group_name ## test_list[] = { \
   __VA_ARGS__ \
 }; \
 test_runner( \
+  junit_xml_file, \
   #group_name, sizeof(#group_name) - 1, \
-  &pass_count, &total_tests_ran, \
+  &pass_count_, &total_tests_ran_, \
   group_name ## test_list, SIZEOF_ARRAY(group_name ## test_list) \
 )
 
@@ -71,13 +77,25 @@ test_runner( \
  * is used, and also below where any RUN_TESTS are used. */
 #define TEST_FINALIZE() \
   for (int i = 0; i < 79; ++i) printf("#"); \
-  printf( \
-    "\n\e[1;%d;%dm%lu/%lu tests passed.\e[0m\n", \
-    FOREGROUND_WHITE, \
-    pass_count == total_tests_ran ? BACKGROUND_GREEN : BACKGROUND_RED, \
-    pass_count, total_tests_ran \
-  ); \
-  return pass_count != total_tests_ran
+  if (with_color) \
+  { \
+    printf( \
+      "\n\e[1;%d;%dm%zu/%zu tests passed.\e[0m\n", \
+      FOREGROUND_WHITE, \
+      pass_count_ == total_tests_ran_ ? BACKGROUND_GREEN : BACKGROUND_RED, \
+      pass_count_, total_tests_ran_ \
+    ); \
+  } \
+  else \
+  { \
+    printf( \
+      "\n%zu/%zu tests passed.\e[0m\n", \
+      pass_count_, total_tests_ran_ \
+    ); \
+  } \
+  junit_xml_end_testsuites(junit_xml_file); \
+  junit_xml_finalize(junit_xml_file); \
+  return pass_count_ != total_tests_ran_
 
 struct test {
   /* The setup and teardown functions are not allowed to fail. If you don't
@@ -94,6 +112,7 @@ struct test {
 /* Runs the tests, prints messages, and updates the number of passed tests and
  * total tests ran. */
 void test_runner(
+  FILE *junit_xml_file,
   char *group_name, size_t group_name_len,
   size_t *pass_count, size_t *total_tests_ran,
   struct test test_list[], size_t num_tests);
