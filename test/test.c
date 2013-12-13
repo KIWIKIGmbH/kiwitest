@@ -101,7 +101,7 @@ void test_runner(
     {
       /* Display a detailed fail message for the failing test. */
       printf(
-        "\r\e[1;%d;%dm%s:[%s]\e[0m\n",
+        "\r\e[1;%d;%dm%s:[%s]\e[0m\n\n",
         FOREGROUND_WHITE, BACKGROUND_RED,
         test_list[i].name, "FAIL"
       );
@@ -118,7 +118,7 @@ void test_runner(
       {
         /* Display a detailed pass message for the passing test. */
         printf(
-          "\r\e[1;%d;%dm%s:[%s]\e[0m\n",
+          "\r\e[1;%d;%dm%s:[%s]\e[0m\n\n",
           FOREGROUND_WHITE, failed ? BACKGROUND_RED : BACKGROUND_GREEN,
           test_list[i].name, "PASS"
         );
