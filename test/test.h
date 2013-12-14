@@ -39,14 +39,14 @@ extern bool with_color;
  * functions will be called before and after the test function if they are
  * non-zero. */
 #define TEST(test_name, test_setup, test_teardown) \
-int test_name ## _function(void); \
+void test_name ## _function(void); \
 struct test test_name = { \
   .setup = test_setup, \
   .teardown = test_teardown, \
   .test = test_name ## _function, \
   .name = #test_name \
 }; \
-int test_name ## _function(void)
+void test_name ## _function(void)
 
 /* Use this to initialize the test harness. It should be used from within the
  * function where RUN_TESTS will be called. This macro should be used only once
@@ -108,8 +108,9 @@ struct test {
   void (*setup)(void);
   void (*teardown)(void);
 
-  /* Tests must return 0 on success and anything else on failure. */
-  int (*test)(void);
+  /* Test macros will call longjmp on failure, so tests don't have any
+   * requirements for what they need to return */
+  void (*test)(void);
 
   char *name;
 };

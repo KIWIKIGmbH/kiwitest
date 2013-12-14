@@ -45,50 +45,173 @@ static void unmute_stdout(void)
 
 static int test_true(int condition)
 {
-  TEST_TRUE(condition);
-  return 0;
+  int failed = 0;
+  /* Override the default failure handler. */
+  jmp_buf previous_test_runner_env;
+  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
+  if (setjmp(test_runner_env))
+  {
+    failed = 1;
+  }
+  else
+  {
+    /* Run the test. */
+    TEST_TRUE(condition);
+  }
+
+  /* Restore the default failure handler. */
+  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+
+  /* Pass */
+  return failed;
 }
 
 static int test_false(int condition)
 {
-  TEST_FALSE(condition);
-  return 0;
+  int failed = 0;
+  /* Override the default failure handler. */
+  jmp_buf previous_test_runner_env;
+  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
+  if (setjmp(test_runner_env))
+  {
+    failed = 1;
+  }
+  else
+  {
+    TEST_FALSE(condition);
+  }
+
+  /* Restore the default failure handler. */
+  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+
+  return failed;
 }
 
 static int test_gt(int a, int b)
 {
-  TEST_GT(a, b);
-  return 0;
+  int failed = 0;
+  /* Override the default failure handler. */
+  jmp_buf previous_test_runner_env;
+  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
+  if (setjmp(test_runner_env))
+  {
+    failed = 1;
+  }
+  else
+  {
+    TEST_GT(a, b);
+  }
+
+  /* Restore the default failure handler. */
+  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+
+  return failed;
 }
 
 static int test_lt(int a, int b)
 {
-  TEST_LT(a, b);
-  return 0;
+  int failed = 0;
+  /* Override the default failure handler. */
+  jmp_buf previous_test_runner_env;
+  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
+  if (setjmp(test_runner_env))
+  {
+    failed = 1;
+  }
+  else
+  {
+    TEST_LT(a, b);
+  }
+
+  /* Restore the default failure handler. */
+  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+
+  /* Pass */
+  return failed;
 }
 
 static int test_ge(int a, int b)
 {
-  TEST_GE(a, b);
-  return 0;
+  int failed = 0;
+  /* Override the default failure handler. */
+  jmp_buf previous_test_runner_env;
+  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
+  if (setjmp(test_runner_env))
+  {
+    failed = 1;
+  }
+  else
+  {
+    TEST_GE(a, b);
+  }
+
+  /* Restore the default failure handler. */
+  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+
+  return failed;
 }
 
 static int test_le(int a, int b)
 {
-  TEST_LE(a, b);
-  return 0;
+  int failed = 0;
+  /* Override the default failure handler. */
+  jmp_buf previous_test_runner_env;
+  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
+  if (setjmp(test_runner_env))
+  {
+    failed = 1;
+  }
+  else
+  {
+    TEST_LE(a, b);
+  }
+
+  /* Restore the default failure handler. */
+  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+
+  return failed;
 }
 
 static int test_eq(int a, int b)
 {
-  TEST_EQ(a, b);
-  return 0;
+  int failed = 0;
+  /* Override the default failure handler. */
+  jmp_buf previous_test_runner_env;
+  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
+  if (setjmp(test_runner_env))
+  {
+    failed = 1;
+  }
+  else
+  {
+    TEST_EQ(a, b);
+  }
+
+  /* Restore the default failure handler. */
+  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+
+  return failed;
 }
 
 static int test_ne(int a, int b)
 {
-  TEST_NE(a, b);
-  return 0;
+  int failed = 0;
+  /* Override the default failure handler. */
+  jmp_buf previous_test_runner_env;
+  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
+  if (setjmp(test_runner_env))
+  {
+    failed = 1;
+  }
+  else
+  {
+    TEST_NE(a, b);
+  }
+
+  /* Restore the default failure handler. */
+  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+
+  return failed;
 }
 
 TEST(test_assert_true_pass, 0, 0)
@@ -100,8 +223,6 @@ TEST(test_assert_true_pass, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 0);
-
-  return 0;
 }
 
 TEST(test_assert_true_fail, 0, 0)
@@ -112,8 +233,6 @@ TEST(test_assert_true_fail, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 1);
-
-  return 0;
 }
 
 TEST(test_assert_false_pass, 0, 0)
@@ -124,8 +243,6 @@ TEST(test_assert_false_pass, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 0);
-
-  return 0;
 }
 
 TEST(test_assert_false_fail, 0, 0)
@@ -136,8 +253,6 @@ TEST(test_assert_false_fail, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 1);
-
-  return 0;
 }
 
 TEST(test_assert_gt_gt_with_lt, 0, 0)
@@ -149,8 +264,6 @@ TEST(test_assert_gt_gt_with_lt, 0, 0)
   unmute_stdout();
 
   TEST_LT(result, 1);
-
-  return 0;
 }
 
 TEST(test_assert_gt_gt, 0, 0)
@@ -162,8 +275,6 @@ TEST(test_assert_gt_gt, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 0);
-
-  return 0;
 }
 
 TEST(test_assert_gt_lt, 0, 0)
@@ -175,8 +286,6 @@ TEST(test_assert_gt_lt, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 1);
-
-  return 0;
 }
 
 TEST(test_assert_gt_eq, 0, 0)
@@ -188,8 +297,6 @@ TEST(test_assert_gt_eq, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 1);
-
-  return 0;
 }
 
 TEST(test_assert_lt_lt_with_true, 0, 0)
@@ -201,8 +308,6 @@ TEST(test_assert_lt_lt_with_true, 0, 0)
   unmute_stdout();
 
   TEST_TRUE(result == 0);
-
-  return 0;
 }
 
 TEST(test_assert_lt_eq_with_true, 0, 0)
@@ -214,8 +319,6 @@ TEST(test_assert_lt_eq_with_true, 0, 0)
   unmute_stdout();
 
   TEST_TRUE(result == 1);
-
-  return 0;
 }
 
 TEST(test_assert_lt_gt, 0, 0)
@@ -227,8 +330,6 @@ TEST(test_assert_lt_gt, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 1);
-
-  return 0;
 }
 
 TEST(test_assert_lt_lt, 0, 0)
@@ -240,8 +341,6 @@ TEST(test_assert_lt_lt, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 0);
-
-  return 0;
 }
 
 TEST(test_assert_lt_eq, 0, 0)
@@ -253,8 +352,6 @@ TEST(test_assert_lt_eq, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 1);
-
-  return 0;
 }
 
 TEST(test_assert_ge_gt, 0, 0)
@@ -266,8 +363,6 @@ TEST(test_assert_ge_gt, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 0);
-
-  return 0;
 }
 
 TEST(test_assert_ge_lt, 0, 0)
@@ -279,8 +374,6 @@ TEST(test_assert_ge_lt, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 1);
-
-  return 0;
 }
 
 TEST(test_assert_ge_eq, 0, 0)
@@ -292,8 +385,6 @@ TEST(test_assert_ge_eq, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 0);
-
-  return 0;
 }
 
 TEST(test_assert_le_gt, 0, 0)
@@ -305,8 +396,6 @@ TEST(test_assert_le_gt, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 1);
-
-  return 0;
 }
 
 TEST(test_assert_le_lt, 0, 0)
@@ -318,8 +407,6 @@ TEST(test_assert_le_lt, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 0);
-
-  return 0;
 }
 
 TEST(test_assert_le_eq, 0, 0)
@@ -331,8 +418,6 @@ TEST(test_assert_le_eq, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 0);
-
-  return 0;
 }
 
 TEST(test_assert_eq_gt_with_ne, 0, 0)
@@ -344,8 +429,6 @@ TEST(test_assert_eq_gt_with_ne, 0, 0)
   unmute_stdout();
 
   TEST_NE(result, 0);
-
-  return 0;
 }
 
 TEST(test_assert_eq_gt, 0, 0)
@@ -357,8 +440,6 @@ TEST(test_assert_eq_gt, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 1);
-
-  return 0;
 }
 
 TEST(test_assert_eq_lt, 0, 0)
@@ -370,8 +451,6 @@ TEST(test_assert_eq_lt, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 1);
-
-  return 0;
 }
 
 TEST(test_assert_eq_eq, 0, 0)
@@ -383,8 +462,6 @@ TEST(test_assert_eq_eq, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 0);
-
-  return 0;
 }
 
 TEST(test_assert_ne_eq_with_gt, 0, 0)
@@ -396,8 +473,6 @@ TEST(test_assert_ne_eq_with_gt, 0, 0)
   unmute_stdout();
 
   TEST_GT(result, 0);
-
-  return 0;
 }
 
 TEST(test_assert_ne_gt, 0, 0)
@@ -409,8 +484,6 @@ TEST(test_assert_ne_gt, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 0);
-
-  return 0;
 }
 
 TEST(test_assert_ne_lt, 0, 0)
@@ -422,8 +495,6 @@ TEST(test_assert_ne_lt, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 0);
-
-  return 0;
 }
 
 TEST(test_assert_ne_eq, 0, 0)
@@ -435,8 +506,6 @@ TEST(test_assert_ne_eq, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 1);
-
-  return 0;
 }
 
 TEST(print_dashed_name_to_string_odd_name_even_len, 0, 0)
@@ -457,8 +526,6 @@ TEST(print_dashed_name_to_string_odd_name_even_len, 0, 0)
 
   print_dashed_name_to_string(s, "hello", sizeof("hello") - 1, 6);
   TEST_STRING_EQ(s, " hello");
-
-  return 0;
 }
 
 TEST(print_dashed_name_to_string_odd_name_odd_len, 0, 0)
@@ -482,8 +549,6 @@ TEST(print_dashed_name_to_string_odd_name_odd_len, 0, 0)
 
   print_dashed_name_to_string(s, "hello", sizeof("hello") - 1, 5);
   TEST_STRING_EQ(s, "hello");
-
-  return 0;
 }
 
 TEST(print_dashed_name_to_string_even_name_even_len, 0, 0)
@@ -504,8 +569,6 @@ TEST(print_dashed_name_to_string_even_name_even_len, 0, 0)
 
   print_dashed_name_to_string(s, "banana", sizeof("banana") - 1, 6);
   TEST_STRING_EQ(s, "banana");
-
-  return 0;
 }
 
 TEST(print_dashed_name_to_string_even_name_odd_len, 0, 0)
@@ -526,6 +589,4 @@ TEST(print_dashed_name_to_string_even_name_odd_len, 0, 0)
 
   print_dashed_name_to_string(s, "banana", sizeof("banana") - 1, 7);
   TEST_STRING_EQ(s, "banana ");
-
-  return 0;
 }

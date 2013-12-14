@@ -10,10 +10,12 @@
 #include "junit_xml.h"
 #include <stdio.h>
 #include <stdbool.h>
+#include <setjmp.h>
 
 bool test_verbose = false;
 char failure_message_buffer[1024];
 bool with_color = true;
+jmp_buf test_runner_env;
 
 /*
  * Print out the provided name to the provided string, centered on a line
@@ -93,7 +95,22 @@ void test_runner(
     printf("%s:", test_list[i].name);
 
     clock_t start = clock();
-    int failed = test_list[i].test();
+
+    int failed = false;
+
+    /* Set a failure handler. */
+    if (setjmp(test_runner_env))
+    {
+      /* If setjmp is non-zero, then we got here from a longjmp (which only
+       * happens when tests fail). */
+      failed = true;
+    }
+    else
+    {
+      /* The test didn't run yet, so run it. */
+      test_list[i].test();
+    }
+
     int ticks_elapsed = clock() - start;
     float elapsed_time = ticks_elapsed / CLOCKS_PER_SEC;
 

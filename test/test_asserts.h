@@ -12,6 +12,12 @@
 #define TEST_ASSERTS_H
 
 #include "test_colors.h"
+#include <setjmp.h>
+
+extern jmp_buf test_runner_env;
+
+#define TEST_FAIL() \
+  longjmp(test_runner_env, 1)
 
 #define TEST_TRUE(condition) \
 do { \
@@ -39,7 +45,7 @@ do { \
       ); \
     } \
     printf("%s", failure_message_buffer); \
-    return 1; \
+    TEST_FAIL(); \
   } \
 } while(0)
 
@@ -69,7 +75,7 @@ do { \
       ); \
     } \
     printf("%s", failure_message_buffer); \
-    return 1; \
+    TEST_FAIL(); \
   } \
 } while(0)
 
@@ -99,7 +105,7 @@ do { \
       ); \
     } \
     printf("%s", failure_message_buffer); \
-    return 1; \
+    TEST_FAIL(); \
   } \
 } while(0)
 
@@ -129,7 +135,7 @@ do { \
       ); \
     } \
     printf("%s", failure_message_buffer); \
-    return 1; \
+    TEST_FAIL(); \
   } \
 } while(0)
 
@@ -159,7 +165,7 @@ do { \
       ); \
     } \
     printf("%s", failure_message_buffer); \
-    return 1; \
+    TEST_FAIL(); \
   } \
 } while(0)
 
@@ -189,7 +195,7 @@ do { \
       ); \
     } \
     printf("%s", failure_message_buffer); \
-    return 1; \
+    TEST_FAIL(); \
   } \
 } while(0)
 
@@ -219,7 +225,7 @@ do { \
       ); \
     } \
     printf("%s", failure_message_buffer); \
-    return 1; \
+    TEST_FAIL(); \
   } \
 } while(0)
 
@@ -249,7 +255,7 @@ do { \
       ); \
     } \
     printf("%s", failure_message_buffer); \
-    return 1; \
+    TEST_FAIL(); \
   } \
 } while(0)
 
@@ -263,7 +269,7 @@ do { \
       FOREGROUND_WHITE, BACKGROUND_RED, \
       __LINE__, a, b \
     ); \
-    return 1; \
+    TEST_FAIL(); \
   } \
 } while(0)
 
