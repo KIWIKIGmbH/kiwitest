@@ -91,7 +91,7 @@ do { \
         "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " > " #b \
         "' (" #a "=%td, " #b "=%td)\e[0m\n", \
         FOREGROUND_WHITE, BACKGROUND_RED, \
-        __LINE__, (ptrdiff_t)a, (ptrdiff_t)b \
+        __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
     } \
     else \
@@ -101,7 +101,7 @@ do { \
         sizeof(failure_message_buffer), \
         __FILE__ ":%d\nTest failed: '" #a " > " #b \
         "' (" #a "=%td, " #b "=%td)\n", \
-        __LINE__, (ptrdiff_t)a, (ptrdiff_t)b \
+        __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
     } \
     printf("%s", failure_message_buffer); \
@@ -121,7 +121,7 @@ do { \
         "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " < " #b \
         "' (" #a "=%td, " #b "=%td)\e[0m\n", \
         FOREGROUND_WHITE, BACKGROUND_RED, \
-        __LINE__, (ptrdiff_t)a, (ptrdiff_t)b \
+        __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
     } \
     else \
@@ -131,7 +131,7 @@ do { \
         sizeof(failure_message_buffer), \
         __FILE__ ":%d\nTest failed: '" #a " < " #b \
         "' (" #a "=%td, " #b "=%td)\n", \
-        __LINE__, (ptrdiff_t)a, (ptrdiff_t)b \
+        __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
     } \
     printf("%s", failure_message_buffer); \
@@ -151,7 +151,7 @@ do { \
         "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " >= " #b \
         "' (" #a "=%td, " #b "=%td)\e[0m\n", \
         FOREGROUND_WHITE, BACKGROUND_RED, \
-        __LINE__, (ptrdiff_t)a, (ptrdiff_t)b \
+        __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
     } \
     else \
@@ -161,7 +161,7 @@ do { \
         sizeof(failure_message_buffer), \
         __FILE__ ":%d\nTest failed: '" #a " >= " #b \
         "' (" #a "=%td, " #b "=%td)\n", \
-        __LINE__, (ptrdiff_t)a, (ptrdiff_t)b \
+        __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
     } \
     printf("%s", failure_message_buffer); \
@@ -181,7 +181,7 @@ do { \
         "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " <= " #b \
         "' (" #a "=%td, " #b "=%td)\e[0m\n", \
         FOREGROUND_WHITE, BACKGROUND_RED, \
-        __LINE__, (ptrdiff_t)a, (ptrdiff_t)b \
+        __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
     } \
     else \
@@ -191,7 +191,7 @@ do { \
         sizeof(failure_message_buffer), \
         __FILE__ ":%d\nTest failed: '" #a " <= " #b \
         "' (" #a "=%td, " #b "=%td)\n", \
-        __LINE__, (ptrdiff_t)a, (ptrdiff_t)b \
+        __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
     } \
     printf("%s", failure_message_buffer); \
@@ -211,7 +211,7 @@ do { \
         "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " == " #b \
         "' (" #a "=%td, " #b "=%td)\e[0m\n", \
         FOREGROUND_WHITE, BACKGROUND_RED, \
-        __LINE__, (ptrdiff_t)a, (ptrdiff_t)b \
+        __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
     } \
     else \
@@ -221,7 +221,7 @@ do { \
         sizeof(failure_message_buffer), \
         __FILE__ ":%d\nTest failed: '" #a " == " #b \
         "' (" #a "=%td, " #b "=%td)\n", \
-        __LINE__, (ptrdiff_t)a, (ptrdiff_t)b \
+        __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
     } \
     printf("%s", failure_message_buffer); \
@@ -241,7 +241,7 @@ do { \
         "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " != " #b \
         "' (" #a "=%td, " #b "=%td)\e[0m\n", \
         FOREGROUND_WHITE, BACKGROUND_RED, \
-        __LINE__, (ptrdiff_t)a, (ptrdiff_t)b \
+        __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
     } \
     else \
@@ -251,7 +251,7 @@ do { \
         sizeof(failure_message_buffer), \
         __FILE__ ":%d\nTest failed: '" #a " != " #b \
         "' (" #a "=%td, " #b "=%td)\n", \
-        __LINE__, (ptrdiff_t)a, (ptrdiff_t)b \
+        __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
     } \
     printf("%s", failure_message_buffer); \
