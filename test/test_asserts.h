@@ -273,4 +273,70 @@ do { \
   } \
 } while(0)
 
+#define TEST_MEM_EQ(a, b, n) \
+do { \
+  unsigned char *a8 = (unsigned char *)a; \
+  unsigned char *b8 = (unsigned char *)b; \
+  for (size_t i = 0; i < n; i++) \
+  { \
+    if (a8[i] != b8[i]) \
+    { \
+      /* Determine context to display. */ \
+      bool partial_start = false; \
+      bool partial_end = true; \
+      size_t context_before = 4; \
+      size_t context_after = 4; \
+      size_t start = 0; \
+      if (i > context_before) \
+      { \
+        start = i - context_before; \
+        partial_start = true; \
+      } \
+      size_t end = i + context_after + 1; \
+      if (end >= n) \
+      { \
+        end = n; \
+        partial_end = false; \
+      } \
+      printf( \
+        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " != " #b "'\n", \
+        FOREGROUND_WHITE, BACKGROUND_RED, \
+        __LINE__ \
+      ); \
+      /* Display buffer a */ \
+      if (partial_start) printf("... "); \
+      for (size_t j = start; j < end; j++) \
+      { \
+        printf("%02X ", a8[j]); \
+      } \
+      if (partial_end) printf("... "); \
+      printf(": " #a "\n"); \
+      /* Display buffer b */ \
+      if (partial_start) printf("... "); \
+      for (size_t j = start; j < end; j++) \
+      { \
+        printf("%02X ", b8[j]); \
+      } \
+      if (partial_end) printf("... "); \
+      printf(": " #b "\n"); \
+      /* Display error marker */ \
+      if (partial_start) printf("    "); \
+      for (size_t j = start; j < end; j++) \
+      { \
+        if (j == i) \
+        { \
+          printf("~~"); \
+          break; \
+        } \
+        else \
+        { \
+          printf("   "); \
+        } \
+      } \
+      printf("\e[0m\n"); \
+      break; \
+    } \
+  } \
+} while(0)
+
 #endif
