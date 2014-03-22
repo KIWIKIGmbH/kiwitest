@@ -28,8 +28,8 @@ do { \
       snprintf( \
         failure_message_buffer, \
         sizeof(failure_message_buffer), \
-        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #condition \
-        "' (expected true, was false)\e[0m\n", \
+        "\r\x1b[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #condition \
+        "' (expected true, was false)\x1b[0m\n", \
         FOREGROUND_WHITE, BACKGROUND_RED, \
         __LINE__ \
       ); \
@@ -58,8 +58,8 @@ do { \
       snprintf( \
         failure_message_buffer, \
         sizeof(failure_message_buffer), \
-        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #condition \
-        "' (expected false, was true)\e[0m\n", \
+        "\r\x1b[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #condition \
+        "' (expected false, was true)\x1b[0m\n", \
         FOREGROUND_WHITE, BACKGROUND_RED, \
         __LINE__ \
       ); \
@@ -88,8 +88,8 @@ do { \
       snprintf( \
         failure_message_buffer, \
         sizeof(failure_message_buffer), \
-        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " > " #b \
-        "' (" #a "=%td, " #b "=%td)\e[0m\n", \
+        "\r\x1b[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " > " #b \
+        "' (" #a "=%td, " #b "=%td)\x1b[0m\n", \
         FOREGROUND_WHITE, BACKGROUND_RED, \
         __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
@@ -118,8 +118,8 @@ do { \
       snprintf( \
         failure_message_buffer, \
         sizeof(failure_message_buffer), \
-        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " < " #b \
-        "' (" #a "=%td, " #b "=%td)\e[0m\n", \
+        "\r\x1b[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " < " #b \
+        "' (" #a "=%td, " #b "=%td)\x1b[0m\n", \
         FOREGROUND_WHITE, BACKGROUND_RED, \
         __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
@@ -148,8 +148,8 @@ do { \
       snprintf( \
         failure_message_buffer, \
         sizeof(failure_message_buffer), \
-        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " >= " #b \
-        "' (" #a "=%td, " #b "=%td)\e[0m\n", \
+        "\r\x1b[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " >= " #b \
+        "' (" #a "=%td, " #b "=%td)\x1b[0m\n", \
         FOREGROUND_WHITE, BACKGROUND_RED, \
         __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
@@ -178,8 +178,8 @@ do { \
       snprintf( \
         failure_message_buffer, \
         sizeof(failure_message_buffer), \
-        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " <= " #b \
-        "' (" #a "=%td, " #b "=%td)\e[0m\n", \
+        "\r\x1b[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " <= " #b \
+        "' (" #a "=%td, " #b "=%td)\x1b[0m\n", \
         FOREGROUND_WHITE, BACKGROUND_RED, \
         __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
@@ -208,8 +208,8 @@ do { \
       snprintf( \
         failure_message_buffer, \
         sizeof(failure_message_buffer), \
-        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " == " #b \
-        "' (" #a "=%td, " #b "=%td)\e[0m\n", \
+        "\r\x1b[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " == " #b \
+        "' (" #a "=%td, " #b "=%td)\x1b[0m\n", \
         FOREGROUND_WHITE, BACKGROUND_RED, \
         __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
@@ -238,8 +238,8 @@ do { \
       snprintf( \
         failure_message_buffer, \
         sizeof(failure_message_buffer), \
-        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " != " #b \
-        "' (" #a "=%td, " #b "=%td)\e[0m\n", \
+        "\r\x1b[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " != " #b \
+        "' (" #a "=%td, " #b "=%td)\x1b[0m\n", \
         FOREGROUND_WHITE, BACKGROUND_RED, \
         __LINE__, (ptrdiff_t)(a), (ptrdiff_t)(b) \
       ); \
@@ -264,8 +264,8 @@ do { \
   if (strcmp(a, b)) \
   { \
     printf( \
-      "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " != " #b \
-      "' (" #a "=%s, " #b "=%s)\e[0m\n", \
+      "\r\x1b[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " != " #b \
+      "' (" #a "=%s, " #b "=%s)\x1b[0m\n", \
       FOREGROUND_WHITE, BACKGROUND_RED, \
       __LINE__, a, b \
     ); \
@@ -299,7 +299,7 @@ do { \
         partial_end = false; \
       } \
       printf( \
-        "\r\e[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " != " #b "'\n", \
+        "\r\x1b[1;%d;%dm" __FILE__ ":%d\nTest failed: '" #a " != " #b "'\n", \
         FOREGROUND_WHITE, BACKGROUND_RED, \
         __LINE__ \
       ); \
@@ -333,7 +333,7 @@ do { \
           printf("   "); \
         } \
       } \
-      printf("\e[0m\n"); \
+      printf("\x1b[0m\n"); \
       break; \
     } \
   } \

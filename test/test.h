@@ -82,7 +82,7 @@ test_runner( \
   if (with_color) \
   { \
     printf( \
-      "\n\e[1;%d;%dm%zu/%zu tests passed.\e[0m\n", \
+      "\n\x1b[1;%d;%dm%zu/%zu tests passed.\x1b[0m\n", \
       FOREGROUND_WHITE, \
       pass_count_ == total_tests_ran_ ? BACKGROUND_GREEN : BACKGROUND_RED, \
       pass_count_, total_tests_ran_ \
@@ -91,7 +91,7 @@ test_runner( \
   else \
   { \
     printf( \
-      "\n%zu/%zu tests passed.\e[0m\n", \
+      "\n%zu/%zu tests passed.\x1b[0m\n", \
       pass_count_, total_tests_ran_ \
     ); \
   } \
