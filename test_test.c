@@ -235,6 +235,27 @@ static int test_string_eq(char *a, char *b)
   return failed;
 }
 
+static int test_mem_eq(void *a, void *b, size_t n)
+{
+  int failed = 0;
+  /* Override the default failure handler. */
+  jmp_buf previous_test_runner_env;
+  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
+  if (setjmp(test_runner_env))
+  {
+    failed = 1;
+  }
+  else
+  {
+    TEST_MEM_EQ(a, b, n);
+  }
+
+  /* Restore the default failure handler. */
+  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+
+  return failed;
+}
+
 TEST(test_assert_true_pass, 0, 0)
 {
   int a = 1;
@@ -546,6 +567,28 @@ TEST(test_assert_string_eq_fail, 0, 0)
   char b[] = "goodbye";
   mute_stdout();
   int result = test_string_eq(a, b);
+  unmute_stdout();
+
+  TEST_EQ(result, 1);
+}
+
+TEST(test_assert_mem_eq_pass, 0, 0)
+{
+  unsigned char a[] = { 0xAA, 0x55, 0xA5, 0x5A, 0xDE, 0xAD, 0xBE, 0xEF };
+  unsigned char b[] = { 0xAA, 0x55, 0xA5, 0x5A, 0xDE, 0xAD, 0xBE, 0xEF };
+  mute_stdout();
+  int result = test_mem_eq(a, b, sizeof(a));
+  unmute_stdout();
+
+  TEST_EQ(result, 0);
+}
+
+TEST(test_assert_mem_eq_fail, 0, 0)
+{
+  unsigned char a[] = { 0xAA, 0x55, 0xA5, 0x5A, 0xDE, 0xAD, 0xBE, 0xEF };
+  unsigned char b[] = { 0xAA, 0x55, 0xA5, 0x5A, 0xBE, 0xEF, 0xBA, 0xBE };
+  mute_stdout();
+  int result = test_mem_eq(a, b, sizeof(a));
   unmute_stdout();
 
   TEST_EQ(result, 1);

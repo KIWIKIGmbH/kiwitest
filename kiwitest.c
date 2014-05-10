@@ -78,6 +78,8 @@ int main(int argc, char *argv[])
     test_assert_ne_eq,
     test_assert_string_eq_pass,
     test_assert_string_eq_fail,
+    test_assert_mem_eq_pass,
+    test_assert_mem_eq_fail,
     print_dashed_name_to_string_odd_name_even_len,
     print_dashed_name_to_string_odd_name_odd_len,
     print_dashed_name_to_string_even_name_even_len,

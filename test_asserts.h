@@ -335,6 +335,7 @@ do { \
         } \
       } \
       printf("\x1b[0m\n"); \
+      TEST_FAIL(); \
       break; \
     } \
   } \
