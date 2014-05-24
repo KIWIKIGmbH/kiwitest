@@ -214,6 +214,27 @@ static int test_ne(int a, int b)
   return failed;
 }
 
+static int test_string_eq(char *a, char *b)
+{
+  int failed = 0;
+  /* Override the default failure handler. */
+  jmp_buf previous_test_runner_env;
+  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
+  if (setjmp(test_runner_env))
+  {
+    failed = 1;
+  }
+  else
+  {
+    TEST_STRING_EQ(a, b);
+  }
+
+  /* Restore the default failure handler. */
+  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+
+  return failed;
+}
+
 TEST(test_assert_true_pass, 0, 0)
 {
   int a = 1;
@@ -503,6 +524,28 @@ TEST(test_assert_ne_eq, 0, 0)
   int b = 0;
   mute_stdout();
   int result = test_ne(a, b);
+  unmute_stdout();
+
+  TEST_EQ(result, 1);
+}
+
+TEST(test_assert_string_eq_pass, 0, 0)
+{
+  char a[] = "hello";
+  char b[] = "hello";
+  mute_stdout();
+  int result = test_string_eq(a, b);
+  unmute_stdout();
+
+  TEST_EQ(result, 0);
+}
+
+TEST(test_assert_string_eq_fail, 0, 0)
+{
+  char a[] = "hello";
+  char b[] = "goodbye";
+  mute_stdout();
+  int result = test_string_eq(a, b);
   unmute_stdout();
 
   TEST_EQ(result, 1);
