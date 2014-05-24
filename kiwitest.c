@@ -83,7 +83,8 @@ int main(int argc, char *argv[])
     print_dashed_name_to_string_odd_name_even_len,
     print_dashed_name_to_string_odd_name_odd_len,
     print_dashed_name_to_string_even_name_even_len,
-    print_dashed_name_to_string_even_name_odd_len
+    print_dashed_name_to_string_even_name_odd_len,
+    can_use_percent_in_test_assert
   );
 
   TEST_FINALIZE();

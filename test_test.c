@@ -676,3 +676,12 @@ TEST(print_dashed_name_to_string_even_name_odd_len, 0, 0)
   print_dashed_name_to_string(s, "banana", sizeof("banana") - 1, 7);
   TEST_STRING_EQ(s, "banana ");
 }
+
+TEST(can_use_percent_in_test_assert, 0, 0)
+{
+  /* To test that we can use a percent in a test assert, we pass it as a
+   * parameter to a test assert. If this compiles successfully, then there is
+   * no trouble with the implementation of the test macro placing stringified
+   * parameters into format strings. */
+  TEST_EQ(0, 8 % 4);
+}
