@@ -94,7 +94,9 @@ void test_runner(
      * write over it with colored print. */
     printf("%s:", test_list[i].name);
 
+#if KIWITEST_TIME_MEASUREMENT
     clock_t start = clock();
+#endif
 
     int failed = false;
 
@@ -111,8 +113,12 @@ void test_runner(
       test_list[i].test();
     }
 
+#if KIWITEST_TIME_MEASUREMENT
     int ticks_elapsed = clock() - start;
     float elapsed_time = ticks_elapsed / CLOCKS_PER_SEC;
+#else
+    float elapsed_time = 0;
+#endif
 
     if (failed)
     {

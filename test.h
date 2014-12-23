@@ -24,7 +24,15 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdio.h>
+
+/* Provide a default for KIWITEST_TIME_MEASUREMENT. */
+#ifndef KIWITEST_TIME_MEASUREMENT
+#define KIWITEST_TIME_MEASUREMENT 1
+#endif
+
+#if KIWITEST_TIME_MEASUREMENT
 #include <time.h> // clock_t, CLOCKS_PER_SEC
+#endif
 
 #define TEST_LINE_LEN 79
 
@@ -48,6 +56,22 @@ struct test test_name = { \
 }; \
 void test_name ## _function(void)
 
+/* TIME_INIT and TIME_FINALIZE will get used by TEST_INIT and TEST_FINALIZE. We
+ * define them conditionally on KIWITEST_TIME_MEASUREMENT so that for platforms
+ * that have no way of measuring how long tests take to run, we don't try to
+ * collect or report that information. */
+#if KIWITEST_TIME_MEASUREMENT
+#define TIME_INIT() \
+  clock_t start = clock()
+#define TIME_FINALIZE() \
+  clock_t end = clock(); \
+  float elapsed = (float)(end - start) / CLOCKS_PER_SEC; \
+  printf("Time elapsed: %0.3f seconds.\n", elapsed)
+#else
+#define TIME_INIT() do { } while(0)
+#define TIME_FINALIZE() do { } while(0)
+#endif
+
 /* Use this to initialize the test harness. It should be used from within the
  * function where RUN_TESTS will be called. This macro should be used only once
  * within a function. */
@@ -56,7 +80,7 @@ void test_name ## _function(void)
   size_t total_tests_ran_ = 0; \
   FILE *junit_xml_file = junit_xml_init(junit_xml_output_filepath); \
   junit_xml_begin_testsuites(junit_xml_file); \
-  clock_t start = clock()
+  TIME_INIT()
 
 /* Use this to run a list of tests as a group. The provided group name serves
  * as a means for one to organize how test output is generated and does not
@@ -97,9 +121,7 @@ test_runner( \
   } \
   junit_xml_end_testsuites(junit_xml_file); \
   junit_xml_finalize(junit_xml_file); \
-  clock_t end = clock(); \
-  float elapsed = (float)(end - start) / CLOCKS_PER_SEC; \
-  printf("Time elapsed: %0.3f seconds.\n", elapsed); \
+  TIME_FINALIZE(); \
   return pass_count_ != total_tests_ran_
 
 struct test {
