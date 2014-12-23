@@ -17,6 +17,7 @@
 extern jmp_buf test_runner_env;
 
 #define TEST_FAIL() \
+  printf("%s", failure_message_buffer); \
   longjmp(test_runner_env, 1)
 
 #define TEST_TRUE(condition) \
@@ -46,7 +47,6 @@ do { \
         #condition \
       ); \
     } \
-    printf("%s", failure_message_buffer); \
     TEST_FAIL(); \
   } \
 } while(0)
@@ -78,7 +78,6 @@ do { \
         #condition \
       ); \
     } \
-    printf("%s", failure_message_buffer); \
     TEST_FAIL(); \
   } \
 } while(0)
@@ -114,7 +113,6 @@ do { \
         #b, (ptrdiff_t)(b) \
       ); \
     } \
-    printf("%s", failure_message_buffer); \
     TEST_FAIL(); \
   } \
 } while(0)
@@ -150,7 +148,6 @@ do { \
         #b, (ptrdiff_t)(b) \
       ); \
     } \
-    printf("%s", failure_message_buffer); \
     TEST_FAIL(); \
   } \
 } while(0)
@@ -186,7 +183,6 @@ do { \
         #b, (ptrdiff_t)(b) \
       ); \
     } \
-    printf("%s", failure_message_buffer); \
     TEST_FAIL(); \
   } \
 } while(0)
@@ -222,7 +218,6 @@ do { \
         #b, (ptrdiff_t)(b) \
       ); \
     } \
-    printf("%s", failure_message_buffer); \
     TEST_FAIL(); \
   } \
 } while(0)
@@ -258,7 +253,6 @@ do { \
         #b, (ptrdiff_t)(b) \
       ); \
     } \
-    printf("%s", failure_message_buffer); \
     TEST_FAIL(); \
   } \
 } while(0)
@@ -294,7 +288,6 @@ do { \
         #b, (ptrdiff_t)(b) \
       ); \
     } \
-    printf("%s", failure_message_buffer); \
     TEST_FAIL(); \
   } \
 } while(0)
@@ -303,7 +296,9 @@ do { \
 do { \
   if (strcmp(a, b)) \
   { \
-    printf( \
+    snprintf( \
+      failure_message_buffer, \
+      sizeof(failure_message_buffer), \
       "\r\x1b[1;%d;%dm" __FILE__ ":%d\x1b[K\nTest failed: '%s != %s'" \
       " (%s=%s, %s=%s)\x1b[0m\n", \
       FOREGROUND_WHITE, BACKGROUND_RED, \
@@ -330,6 +325,8 @@ do { \
       size_t context_before = 4; \
       size_t context_after = 4; \
       size_t start = 0; \
+      int written = 0; \
+      size_t buffer_pos = 0; \
       if (i > context_before) \
       { \
         start = i - context_before; \
@@ -341,43 +338,121 @@ do { \
         end = n; \
         partial_end = false; \
       } \
-      printf( \
+      written = snprintf( \
+        &failure_message_buffer[buffer_pos], \
+        sizeof(failure_message_buffer) - buffer_pos, \
         "\r\x1b[1;%d;%dm" __FILE__ ":%d\x1b[K\n" \
         "Test failed: '%s != %s'\n", \
         FOREGROUND_WHITE, BACKGROUND_RED, \
         __LINE__, #a, #b \
       ); \
+      if (written > 0) buffer_pos += written; \
       /* Display buffer a */ \
-      if (partial_start) printf("... "); \
+      if (partial_start) \
+      { \
+        written = snprintf( \
+          &failure_message_buffer[buffer_pos], \
+          sizeof(failure_message_buffer) - buffer_pos, \
+          "... " \
+        ); \
+        if (written > 0) buffer_pos += written; \
+      } \
       for (size_t j = start; j < end; j++) \
       { \
-        printf("%02X ", a8[j]); \
+        written = snprintf( \
+          &failure_message_buffer[buffer_pos], \
+          sizeof(failure_message_buffer) - buffer_pos, \
+          "%02X ", a8[j] \
+        ); \
+        if (written > 0) buffer_pos += written; \
       } \
-      if (partial_end) printf("... "); \
-      printf(": " #a "\n"); \
+      if (partial_end) \
+      { \
+        written = snprintf( \
+          &failure_message_buffer[buffer_pos], \
+          sizeof(failure_message_buffer) - buffer_pos, \
+          "... " \
+        ); \
+        if (written > 0) buffer_pos += written; \
+      } \
+      written = snprintf( \
+        &failure_message_buffer[buffer_pos], \
+        sizeof(failure_message_buffer) - buffer_pos, \
+        ": " #a "\n" \
+      ); \
+      if (written > 0) buffer_pos += written; \
       /* Display buffer b */ \
-      if (partial_start) printf("... "); \
+      if (partial_start) \
+      { \
+        written = snprintf( \
+          &failure_message_buffer[buffer_pos], \
+          sizeof(failure_message_buffer) - buffer_pos, \
+          "... " \
+        ); \
+        if (written > 0) buffer_pos += written; \
+      } \
       for (size_t j = start; j < end; j++) \
       { \
-        printf("%02X ", b8[j]); \
+        written = snprintf( \
+          &failure_message_buffer[buffer_pos], \
+          sizeof(failure_message_buffer) - buffer_pos, \
+          "%02X ", b8[j] \
+        ); \
+        if (written > 0) buffer_pos += written; \
       } \
-      if (partial_end) printf("... "); \
-      printf(": " #b "\n"); \
+      if (partial_end) \
+      { \
+        written = snprintf( \
+          &failure_message_buffer[buffer_pos], \
+          sizeof(failure_message_buffer) - buffer_pos, \
+          "... " \
+        ); \
+        if (written > 0) buffer_pos += written; \
+      } \
+      written = snprintf( \
+        &failure_message_buffer[buffer_pos], \
+        sizeof(failure_message_buffer) - buffer_pos, \
+        ": " #b "\n" \
+      ); \
+      if (written > 0) buffer_pos += written; \
       /* Display error marker */ \
-      if (partial_start) printf("    "); \
+      if (partial_start) \
+      { \
+        written = snprintf( \
+          &failure_message_buffer[buffer_pos], \
+          sizeof(failure_message_buffer) - buffer_pos, \
+          "    " \
+        ); \
+        if (written > 0) buffer_pos += written; \
+      } \
       for (size_t j = start; j < end; j++) \
       { \
         if (j == i) \
         { \
-          printf("~~"); \
+          written = snprintf( \
+            &failure_message_buffer[buffer_pos], \
+            sizeof(failure_message_buffer) - buffer_pos, \
+            "~~" \
+          ); \
+          if (written > 0) buffer_pos += written; \
           break; \
         } \
         else \
         { \
-          printf("   "); \
+          written = snprintf( \
+            &failure_message_buffer[buffer_pos], \
+            sizeof(failure_message_buffer) - buffer_pos, \
+            "   " \
+          ); \
+          if (written > 0) buffer_pos += written; \
         } \
       } \
-      printf("\x1b[0m\n"); \
+      written = snprintf( \
+        &failure_message_buffer[buffer_pos], \
+        sizeof(failure_message_buffer) - buffer_pos, \
+        "\x1b[0m\n" \
+      ); \
+      if (written > 0) buffer_pos += written; \
       TEST_FAIL(); \
       break; \
     } \
