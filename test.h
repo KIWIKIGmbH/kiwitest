@@ -39,6 +39,7 @@
 extern bool test_verbose;
 extern char failure_message_buffer[1024];
 extern bool with_color;
+extern bool silent;
 
 #define SIZEOF_ARRAY(array) sizeof(array) / sizeof(*array)
 

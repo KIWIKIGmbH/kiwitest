@@ -17,7 +17,10 @@
 extern jmp_buf test_runner_env;
 
 #define TEST_FAIL() \
-  printf("%s", failure_message_buffer); \
+  if (!silent) \
+  { \
+    printf("%s", failure_message_buffer); \
+  } \
   longjmp(test_runner_env, 1)
 
 #define TEST_TRUE(condition) \

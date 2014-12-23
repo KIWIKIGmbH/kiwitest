@@ -15,6 +15,7 @@
 bool test_verbose = false;
 char failure_message_buffer[1024];
 bool with_color = true;
+bool silent = false;
 jmp_buf test_runner_env;
 
 /*

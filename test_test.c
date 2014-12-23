@@ -12,35 +12,20 @@
  */
 
 #include "test.h"
-#include <unistd.h>
-#include <fcntl.h>
-
-#if _WIN32
-#define NULL_FILE "NUL"
-#else
-#define NULL_FILE "/dev/null"
-#endif
 
 /* This comes from test/test.c. */
 extern void print_dashed_name_to_string(
   char *s, const char *name, const size_t name_len, const size_t line_len
 );
 
-static int old_stdout = -1;
-static int null_file = -1;
 static void mute_stdout(void)
 {
-  fflush(stdout);
-  old_stdout = dup(1);
-  null_file = open(NULL_FILE, O_WRONLY);
-  dup2(null_file, 1);
+  silent = true;
 }
 
 static void unmute_stdout(void)
 {
-  fflush(stdout);
-  close(null_file);
-  dup2(old_stdout, 1);
+  silent = false;
 }
 
 static int test_true(int condition)
