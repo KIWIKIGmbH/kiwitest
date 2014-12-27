@@ -1,5 +1,6 @@
 CFLAGS=-g -std=c99 -pedantic -Wall -Wextra -Werror \
        -DKIWITEST_TIME_MEASUREMENT=1 \
+       -DKIWITEST_JUNIT_XML=1 \
 
 all: kiwitest
 

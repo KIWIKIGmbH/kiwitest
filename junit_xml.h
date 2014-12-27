@@ -3,6 +3,20 @@
 
 #include <stdio.h>
 
+/* Provide a default value for KIWITEST_JUNIT_XML. */
+#ifndef KIWITEST_JUNIT_XML
+#define KIWITEST_JUNIT_XML 1
+#endif
+
+#if !KIWITEST_JUNIT_XML
+
+/* Define FILE to void so that FILE doesn't have to be defined in those
+ * environments that lack a C library. */
+#define FILE void
+
+#endif
+
+
 FILE *junit_xml_init(const char *path);
 
 void junit_xml_finalize(FILE *junit_xml_file);
