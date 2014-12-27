@@ -28,217 +28,146 @@ static void unmute_stdout(void)
   silent = false;
 }
 
+/* All the 'test_*' functions return non-zero on failure, zero on success. */
 static int test_true(int condition)
 {
-  int failed = 0;
-  /* Override the default failure handler. */
-  jmp_buf previous_test_runner_env;
-  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
-  if (setjmp(test_runner_env))
-  {
-    failed = 1;
-  }
-  else
-  {
-    /* Run the test. */
-    TEST_TRUE(condition);
-  }
+  /* Save the old test_passed value. */
+  bool old_test_passed = test_passed;
 
-  /* Restore the default failure handler. */
-  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+  /* Run the test. */
+  TEST_TRUE(condition);
 
-  /* Pass */
-  return failed;
+  /* Swap the old test_passed and new values. */
+  bool new_test_passed = test_passed;
+  test_passed = old_test_passed;
+
+  return !new_test_passed;
 }
 
 static int test_false(int condition)
 {
-  int failed = 0;
-  /* Override the default failure handler. */
-  jmp_buf previous_test_runner_env;
-  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
-  if (setjmp(test_runner_env))
-  {
-    failed = 1;
-  }
-  else
-  {
-    TEST_FALSE(condition);
-  }
+  /* Save the old test_passed value. */
+  bool old_test_passed = test_passed;
 
-  /* Restore the default failure handler. */
-  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+  TEST_FALSE(condition);
 
-  return failed;
+  /* Swap the old test_passed and new values. */
+  bool new_test_passed = test_passed;
+  test_passed = old_test_passed;
+
+  return !new_test_passed;
 }
 
 static int test_gt(int a, int b)
 {
-  int failed = 0;
-  /* Override the default failure handler. */
-  jmp_buf previous_test_runner_env;
-  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
-  if (setjmp(test_runner_env))
-  {
-    failed = 1;
-  }
-  else
-  {
-    TEST_GT(a, b);
-  }
+  /* Save the old test_passed value. */
+  bool old_test_passed = test_passed;
 
-  /* Restore the default failure handler. */
-  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+  TEST_GT(a, b);
 
-  return failed;
+  /* Swap the old test_passed and new values. */
+  bool new_test_passed = test_passed;
+  test_passed = old_test_passed;
+
+  return !new_test_passed;
 }
 
 static int test_lt(int a, int b)
 {
-  int failed = 0;
-  /* Override the default failure handler. */
-  jmp_buf previous_test_runner_env;
-  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
-  if (setjmp(test_runner_env))
-  {
-    failed = 1;
-  }
-  else
-  {
-    TEST_LT(a, b);
-  }
+  /* Save the old test_passed value. */
+  bool old_test_passed = test_passed;
 
-  /* Restore the default failure handler. */
-  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+  TEST_LT(a, b);
 
-  /* Pass */
-  return failed;
+  /* Swap the old test_passed and new values. */
+  bool new_test_passed = test_passed;
+  test_passed = old_test_passed;
+
+  return !new_test_passed;
 }
 
 static int test_ge(int a, int b)
 {
-  int failed = 0;
-  /* Override the default failure handler. */
-  jmp_buf previous_test_runner_env;
-  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
-  if (setjmp(test_runner_env))
-  {
-    failed = 1;
-  }
-  else
-  {
-    TEST_GE(a, b);
-  }
+  /* Save the old test_passed value. */
+  bool old_test_passed = test_passed;
 
-  /* Restore the default failure handler. */
-  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+  TEST_GE(a, b);
 
-  return failed;
+  /* Swap the old test_passed and new values. */
+  bool new_test_passed = test_passed;
+  test_passed = old_test_passed;
+
+  return !new_test_passed;
 }
 
 static int test_le(int a, int b)
 {
-  int failed = 0;
-  /* Override the default failure handler. */
-  jmp_buf previous_test_runner_env;
-  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
-  if (setjmp(test_runner_env))
-  {
-    failed = 1;
-  }
-  else
-  {
-    TEST_LE(a, b);
-  }
+  /* Save the old test_passed value. */
+  bool old_test_passed = test_passed;
 
-  /* Restore the default failure handler. */
-  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+  TEST_LE(a, b);
 
-  return failed;
+  /* Swap the old test_passed and new values. */
+  bool new_test_passed = test_passed;
+  test_passed = old_test_passed;
+
+  return !new_test_passed;
 }
 
 static int test_eq(int a, int b)
 {
-  int failed = 0;
-  /* Override the default failure handler. */
-  jmp_buf previous_test_runner_env;
-  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
-  if (setjmp(test_runner_env))
-  {
-    failed = 1;
-  }
-  else
-  {
-    TEST_EQ(a, b);
-  }
+  /* Save the old test_passed value. */
+  bool old_test_passed = test_passed;
 
-  /* Restore the default failure handler. */
-  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+  TEST_EQ(a, b);
 
-  return failed;
+  /* Swap the old test_passed and new values. */
+  bool new_test_passed = test_passed;
+  test_passed = old_test_passed;
+
+  return !new_test_passed;
 }
 
 static int test_ne(int a, int b)
 {
-  int failed = 0;
-  /* Override the default failure handler. */
-  jmp_buf previous_test_runner_env;
-  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
-  if (setjmp(test_runner_env))
-  {
-    failed = 1;
-  }
-  else
-  {
-    TEST_NE(a, b);
-  }
+  /* Save the old test_passed value. */
+  bool old_test_passed = test_passed;
 
-  /* Restore the default failure handler. */
-  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+  TEST_NE(a, b);
 
-  return failed;
+  /* Swap the old test_passed and new values. */
+  bool new_test_passed = test_passed;
+  test_passed = old_test_passed;
+
+  return !new_test_passed;
 }
 
 static int test_string_eq(char *a, char *b)
 {
-  int failed = 0;
-  /* Override the default failure handler. */
-  jmp_buf previous_test_runner_env;
-  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
-  if (setjmp(test_runner_env))
-  {
-    failed = 1;
-  }
-  else
-  {
-    TEST_STRING_EQ(a, b);
-  }
+  /* Save the old test_passed value. */
+  bool old_test_passed = test_passed;
 
-  /* Restore the default failure handler. */
-  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+  TEST_STRING_EQ(a, b);
 
-  return failed;
+  /* Swap the old test_passed and new values. */
+  bool new_test_passed = test_passed;
+  test_passed = old_test_passed;
+
+  return !new_test_passed;
 }
 
 static int test_mem_eq(void *a, void *b, size_t n)
 {
-  int failed = 0;
-  /* Override the default failure handler. */
-  jmp_buf previous_test_runner_env;
-  memcpy(previous_test_runner_env, test_runner_env, sizeof(test_runner_env));
-  if (setjmp(test_runner_env))
-  {
-    failed = 1;
-  }
-  else
-  {
-    TEST_MEM_EQ(a, b, n);
-  }
+  /* Save the old test_passed value. */
+  bool old_test_passed = test_passed;
 
-  /* Restore the default failure handler. */
-  memcpy(test_runner_env, previous_test_runner_env, sizeof(test_runner_env));
+  TEST_MEM_EQ(a, b, n);
 
-  return failed;
+  /* Swap the old test_passed and new values. */
+  bool new_test_passed = test_passed;
+  test_passed = old_test_passed;
+
+  return !new_test_passed;
 }
 
 TEST(test_assert_true_pass, 0, 0)

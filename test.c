@@ -10,13 +10,12 @@
 #include "junit_xml.h"
 #include <stdio.h>
 #include <stdbool.h>
-#include <setjmp.h>
 
 bool test_verbose = false;
 char failure_message_buffer[1024];
 bool with_color = true;
 bool silent = false;
-jmp_buf test_runner_env;
+bool test_passed;
 
 /*
  * Print out the provided name to the provided string, centered on a line
@@ -99,20 +98,10 @@ void test_runner(
     clock_t start = clock();
 #endif
 
-    int failed = false;
+    test_passed = true;
 
-    /* Set a failure handler. */
-    if (setjmp(test_runner_env))
-    {
-      /* If setjmp is non-zero, then we got here from a longjmp (which only
-       * happens when tests fail). */
-      failed = true;
-    }
-    else
-    {
-      /* The test didn't run yet, so run it. */
-      test_list[i].test();
-    }
+    /* Run the test. */
+    test_list[i].test();
 
 #if KIWITEST_TIME_MEASUREMENT
     int ticks_elapsed = clock() - start;
@@ -121,7 +110,7 @@ void test_runner(
     float elapsed_time = 0;
 #endif
 
-    if (failed)
+    if (!test_passed)
     {
       /* Display a detailed fail message for the failing test. */
       printf(
@@ -143,7 +132,7 @@ void test_runner(
         /* Display a detailed pass message for the passing test. */
         printf(
           "\r\x1b[1;%d;%dm%s:[%s]\x1b[0m\n\n",
-          FOREGROUND_WHITE, failed ? BACKGROUND_RED : BACKGROUND_GREEN,
+          FOREGROUND_WHITE, !test_passed ? BACKGROUND_RED : BACKGROUND_GREEN,
           test_list[i].name, "PASS"
         );
       }
@@ -162,7 +151,7 @@ void test_runner(
       );
     }
 
-    if (!failed) ++runner_pass_count;
+    if (test_passed) ++runner_pass_count;
 
     /* Run the test teardown function, if it exists. */
     if (test_list[i].teardown) test_list[i].teardown();

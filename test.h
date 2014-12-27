@@ -131,8 +131,8 @@ struct test {
   void (*setup)(void);
   void (*teardown)(void);
 
-  /* Test macros will call longjmp on failure, so tests don't have any
-   * requirements for what they need to return */
+  /* Test macros will set the global 'test_passed' to false on failure, so
+   * tests don't have any requirements for what they need to return */
   void (*test)(void);
 
   char *name;

@@ -12,16 +12,16 @@
 #define TEST_ASSERTS_H
 
 #include "test_colors.h"
-#include <setjmp.h>
+#include <stdbool.h>
 
-extern jmp_buf test_runner_env;
+extern bool test_passed;
 
 #define TEST_FAIL() \
   if (!silent) \
   { \
     printf("%s", failure_message_buffer); \
   } \
-  longjmp(test_runner_env, 1)
+  test_passed = false
 
 #define TEST_TRUE(condition) \
 do { \
