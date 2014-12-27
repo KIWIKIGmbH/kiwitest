@@ -64,7 +64,7 @@ static void print_dashed_name(
 {
   char line[120];
   print_dashed_name_to_string(line, name, name_len, line_len);
-  printf("%s\n", line);
+  printf("%s\r\n", line);
 }
 
 void test_runner(
@@ -114,7 +114,7 @@ void test_runner(
     {
       /* Display a detailed fail message for the failing test. */
       printf(
-        "\r\x1b[1;%d;%dm%s:[%s]\x1b[0m\n\n",
+        "\r\x1b[1;%d;%dm%s:[%s]\x1b[0m\r\n\r\n",
         FOREGROUND_WHITE, BACKGROUND_RED,
         test_list[i].name, "FAIL"
       );
@@ -131,7 +131,7 @@ void test_runner(
       {
         /* Display a detailed pass message for the passing test. */
         printf(
-          "\r\x1b[1;%d;%dm%s:[%s]\x1b[0m\n\n",
+          "\r\x1b[1;%d;%dm%s:[%s]\x1b[0m\r\n\r\n",
           FOREGROUND_WHITE, !test_passed ? BACKGROUND_RED : BACKGROUND_GREEN,
           test_list[i].name, "PASS"
         );
@@ -161,7 +161,7 @@ void test_runner(
   if (with_color)
   {
     printf(
-      "\r\x1b[1;%d;%dm%zu/%zu %s tests passed.\x1b[0m\n\n",
+      "\r\x1b[1;%d;%dm%zu/%zu %s tests passed.\x1b[0m\r\n\r\n",
       FOREGROUND_WHITE,
       runner_pass_count == num_tests ? BACKGROUND_GREEN : BACKGROUND_RED,
       runner_pass_count, num_tests,
@@ -171,7 +171,7 @@ void test_runner(
   else
   {
     printf(
-      "\r%zu/%zu %s tests passed.\n\n",
+      "\r%zu/%zu %s tests passed.\r\n\r\n",
       runner_pass_count, num_tests,
       group_name
     );

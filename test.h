@@ -67,7 +67,7 @@ void test_name ## _function(void)
 #define TIME_FINALIZE() \
   clock_t end = clock(); \
   float elapsed = (float)(end - start) / CLOCKS_PER_SEC; \
-  printf("Time elapsed: %0.3f seconds.\n", elapsed)
+  printf("Time elapsed: %0.3f seconds.\r\n", elapsed)
 #else
 #define TIME_INIT() do { } while(0)
 #define TIME_FINALIZE() do { } while(0)
@@ -107,7 +107,7 @@ test_runner( \
   if (with_color) \
   { \
     printf( \
-      "\n\x1b[1;%d;%dm%zu/%zu tests passed.\x1b[0m\n", \
+      "\r\n\x1b[1;%d;%dm%zu/%zu tests passed.\x1b[0m\r\n", \
       FOREGROUND_WHITE, \
       pass_count_ == total_tests_ran_ ? BACKGROUND_GREEN : BACKGROUND_RED, \
       pass_count_, total_tests_ran_ \
@@ -116,7 +116,7 @@ test_runner( \
   else \
   { \
     printf( \
-      "\n%zu/%zu tests passed.\x1b[0m\n", \
+      "\r\n%zu/%zu tests passed.\x1b[0m\r\n", \
       pass_count_, total_tests_ran_ \
     ); \
   } \
