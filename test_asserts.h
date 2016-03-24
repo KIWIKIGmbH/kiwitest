@@ -87,7 +87,9 @@ do { \
 
 #define TEST_GT(a, b) \
 do { \
-  if (!((a) > (b))) \
+  ptrdiff_t a_val = (ptrdiff_t)(a); \
+  ptrdiff_t b_val = (ptrdiff_t)(b); \
+  if (!(a_val > b_val)) \
   { \
     if (with_color) \
     { \
@@ -99,8 +101,8 @@ do { \
         FOREGROUND_WHITE, BACKGROUND_RED, \
         __LINE__, \
         #a, #b, \
-        #a, (ptrdiff_t)(a), \
-        #b, (ptrdiff_t)(b) \
+        #a, a_val, \
+        #b, b_val \
       ); \
     } \
     else \
@@ -112,8 +114,8 @@ do { \
         " (%s=%td, %s=%td)\r\n", \
         __LINE__, \
         #a, #b, \
-        #a, (ptrdiff_t)(a), \
-        #b, (ptrdiff_t)(b) \
+        #a, a_val, \
+        #b, b_val \
       ); \
     } \
     TEST_FAIL(); \
@@ -122,7 +124,9 @@ do { \
 
 #define TEST_LT(a, b) \
 do { \
-  if (!((a) < (b))) \
+  ptrdiff_t a_val = (ptrdiff_t)(a); \
+  ptrdiff_t b_val = (ptrdiff_t)(b); \
+  if (!(a_val < b_val)) \
   { \
     if (with_color) \
     { \
@@ -134,8 +138,8 @@ do { \
         FOREGROUND_WHITE, BACKGROUND_RED, \
         __LINE__, \
         #a, #b, \
-        #a, (ptrdiff_t)(a), \
-        #b, (ptrdiff_t)(b) \
+        #a, a_val, \
+        #b, b_val \
       ); \
     } \
     else \
@@ -147,8 +151,8 @@ do { \
         " (%s=%td, %s=%td)\r\n", \
         __LINE__, \
         #a, #b, \
-        #a, (ptrdiff_t)(a), \
-        #b, (ptrdiff_t)(b) \
+        #a, a_val, \
+        #b, b_val \
       ); \
     } \
     TEST_FAIL(); \
@@ -157,7 +161,9 @@ do { \
 
 #define TEST_GE(a, b) \
 do { \
-  if (!((a) >= (b))) \
+  ptrdiff_t a_val = (ptrdiff_t)(a); \
+  ptrdiff_t b_val = (ptrdiff_t)(b); \
+  if (!(a_val >= b_val)) \
   { \
     if (with_color) \
     { \
@@ -169,8 +175,8 @@ do { \
         FOREGROUND_WHITE, BACKGROUND_RED, \
         __LINE__, \
         #a, #b, \
-        #a, (ptrdiff_t)(a), \
-        #b, (ptrdiff_t)(b) \
+        #a, a_val, \
+        #b, b_val \
       ); \
     } \
     else \
@@ -182,8 +188,8 @@ do { \
         " (%s=%td, %s=%td)\r\n", \
         __LINE__, \
         #a, #b, \
-        #a, (ptrdiff_t)(a), \
-        #b, (ptrdiff_t)(b) \
+        #a, a_val, \
+        #b, b_val \
       ); \
     } \
     TEST_FAIL(); \
@@ -192,7 +198,9 @@ do { \
 
 #define TEST_LE(a, b) \
 do { \
-  if (!((a) <= (b))) \
+  ptrdiff_t a_val = (ptrdiff_t)(a); \
+  ptrdiff_t b_val = (ptrdiff_t)(b); \
+  if (!(a_val <= b_val)) \
   { \
     if (with_color) \
     { \
@@ -204,8 +212,8 @@ do { \
         FOREGROUND_WHITE, BACKGROUND_RED, \
         __LINE__, \
         #a, #b, \
-        #a, (ptrdiff_t)(a), \
-        #b, (ptrdiff_t)(b) \
+        #a, a_val, \
+        #b, b_val \
       ); \
     } \
     else \
@@ -217,8 +225,8 @@ do { \
         " (%s=%td, %s=%td)\r\n", \
         __LINE__, \
         #a, #b, \
-        #a, (ptrdiff_t)(a), \
-        #b, (ptrdiff_t)(b) \
+        #a, a_val, \
+        #b, b_val \
       ); \
     } \
     TEST_FAIL(); \
@@ -227,7 +235,9 @@ do { \
 
 #define TEST_EQ(a, b) \
 do { \
-  if (!((a) == (b))) \
+  ptrdiff_t a_val = (ptrdiff_t)(a); \
+  ptrdiff_t b_val = (ptrdiff_t)(b); \
+  if (!(a_val == b_val)) \
   { \
     if (with_color) \
     { \
@@ -239,8 +249,8 @@ do { \
         FOREGROUND_WHITE, BACKGROUND_RED, \
         __LINE__, \
         #a, #b, \
-        #a, (ptrdiff_t)(a), \
-        #b, (ptrdiff_t)(b) \
+        #a, a_val, \
+        #b, b_val \
       ); \
     } \
     else \
@@ -252,8 +262,8 @@ do { \
         " (%s=%td, %s=%td)\r\n", \
         __LINE__, \
         #a, #b, \
-        #a, (ptrdiff_t)(a), \
-        #b, (ptrdiff_t)(b) \
+        #a, a_val, \
+        #b, b_val \
       ); \
     } \
     TEST_FAIL(); \
@@ -262,7 +272,9 @@ do { \
 
 #define TEST_NE(a, b) \
 do { \
-  if (!((a) != (b))) \
+  ptrdiff_t a_val = (ptrdiff_t)(a); \
+  ptrdiff_t b_val = (ptrdiff_t)(b); \
+  if (!(a_val != b_val)) \
   { \
     if (with_color) \
     { \
@@ -274,8 +286,8 @@ do { \
         FOREGROUND_WHITE, BACKGROUND_RED, \
         __LINE__, \
         #a, #b, \
-        #a, (ptrdiff_t)(a), \
-        #b, (ptrdiff_t)(b) \
+        #a, a_val, \
+        #b, b_val \
       ); \
     } \
     else \
@@ -287,8 +299,8 @@ do { \
         " (%s=%td, %s=%td)\r\n", \
         __LINE__, \
         #a, #b, \
-        #a, (ptrdiff_t)(a), \
-        #b, (ptrdiff_t)(b) \
+        #a, a_val, \
+        #b, b_val \
       ); \
     } \
     TEST_FAIL(); \

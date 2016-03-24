@@ -191,6 +191,20 @@ TEST(test_assert_true_fail, 0, 0)
   TEST_EQ(result, 1);
 }
 
+TEST(test_assert_true_no_double_evaluate, 0, 0)
+{
+  int a = -1;
+
+  mute_stdout();
+
+  TEST_TRUE(++a);
+  test_passed = 1; /* Reset test passing status */
+
+  unmute_stdout();
+
+  TEST_EQ(a, 0);
+}
+
 TEST(test_assert_false_pass, 0, 0)
 {
   int a = 0;
@@ -209,6 +223,20 @@ TEST(test_assert_false_fail, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 1);
+}
+
+TEST(test_assert_false_no_double_evaluate, 0, 0)
+{
+  int a = 1;
+
+  mute_stdout();
+
+  TEST_FALSE(++a);
+  test_passed = 1; /* Reset test passing status */
+
+  unmute_stdout();
+
+  TEST_EQ(a, 2);
 }
 
 TEST(test_assert_gt_gt_with_lt, 0, 0)
@@ -253,6 +281,22 @@ TEST(test_assert_gt_eq, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 1);
+}
+
+TEST(test_assert_gt_no_double_evaluate, 0, 0)
+{
+  int a = -1;
+  int b = 1;
+
+  mute_stdout();
+
+  TEST_GT(++a, ++b);
+  test_passed = 1; /* Reset test passing status */
+
+  unmute_stdout();
+
+  TEST_EQ(a, 0);
+  TEST_EQ(b, 2);
 }
 
 TEST(test_assert_lt_lt_with_true, 0, 0)
@@ -310,6 +354,22 @@ TEST(test_assert_lt_eq, 0, 0)
   TEST_EQ(result, 1);
 }
 
+TEST(test_assert_lt_no_double_evaluate, 0, 0)
+{
+  int a = 1;
+  int b = -1;
+
+  mute_stdout();
+
+  TEST_LT(++a, ++b);
+  test_passed = 1; /* Reset test passing status */
+
+  unmute_stdout();
+
+  TEST_EQ(a, 2);
+  TEST_EQ(b, 0);
+}
+
 TEST(test_assert_ge_gt, 0, 0)
 {
   int a = 1;
@@ -343,6 +403,22 @@ TEST(test_assert_ge_eq, 0, 0)
   TEST_EQ(result, 0);
 }
 
+TEST(test_assert_ge_no_double_evaluate, 0, 0)
+{
+  int a = -1;
+  int b = 1;
+
+  mute_stdout();
+
+  TEST_GE(++a, ++b);
+  test_passed = 1; /* Reset test passing status */
+
+  unmute_stdout();
+
+  TEST_EQ(a, 0);
+  TEST_EQ(b, 2);
+}
+
 TEST(test_assert_le_gt, 0, 0)
 {
   int a = 1;
@@ -374,6 +450,22 @@ TEST(test_assert_le_eq, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 0);
+}
+
+TEST(test_assert_le_no_double_evaluate, 0, 0)
+{
+  int a = 1;
+  int b = -1;
+
+  mute_stdout();
+
+  TEST_LE(++a, ++b);
+  test_passed = 1; /* Reset test passing status */
+
+  unmute_stdout();
+
+  TEST_EQ(a, 2);
+  TEST_EQ(b, 0);
 }
 
 TEST(test_assert_eq_gt_with_ne, 0, 0)
@@ -420,6 +512,22 @@ TEST(test_assert_eq_eq, 0, 0)
   TEST_EQ(result, 0);
 }
 
+TEST(test_assert_eq_no_double_evaluate, 0, 0)
+{
+  int a = 1;
+  int b = -1;
+
+  mute_stdout();
+
+  TEST_EQ(++a, ++b);
+  test_passed = 1; /* Reset test passing status */
+
+  unmute_stdout();
+
+  TEST_EQ(a, 2);
+  TEST_EQ(b, 0);
+}
+
 TEST(test_assert_ne_eq_with_gt, 0, 0)
 {
   int a = 0;
@@ -462,6 +570,22 @@ TEST(test_assert_ne_eq, 0, 0)
   unmute_stdout();
 
   TEST_EQ(result, 1);
+}
+
+TEST(test_assert_ne_no_double_evaluate, 0, 0)
+{
+  int a = 1;
+  int b = 1;
+
+  mute_stdout();
+
+  TEST_NE(++a, ++b);
+  test_passed = 1; /* Reset test passing status */
+
+  unmute_stdout();
+
+  TEST_EQ(a, 2);
+  TEST_EQ(b, 2);
 }
 
 TEST(test_assert_string_eq_pass, 0, 0)
