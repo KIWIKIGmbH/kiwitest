@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
     test_assert_gt_lt,
     test_assert_gt_eq,
     test_assert_gt_no_double_evaluate,
+    test_assert_gt_can_do_unsigned_comparison,
     test_assert_lt_lt_with_true,
     test_assert_lt_eq_with_true,
     test_assert_lt_gt,

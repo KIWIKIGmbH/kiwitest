@@ -299,6 +299,14 @@ TEST(test_assert_gt_no_double_evaluate, 0, 0)
   TEST_EQ(b, 2);
 }
 
+TEST(test_assert_gt_can_do_unsigned_comparison, 0, 0)
+{
+    size_t a = ~0;
+    size_t b = 0;
+
+    TEST_GT(a, b);
+}
+
 TEST(test_assert_lt_lt_with_true, 0, 0)
 {
   int a = 0;
